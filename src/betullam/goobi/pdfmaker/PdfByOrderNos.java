@@ -1,12 +1,12 @@
 package betullam.goobi.pdfmaker;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.pdfbox.exceptions.COSVisitorException;
-import org.apache.pdfbox.util.PDFMergerUtility;
+import org.apache.pdfbox.multipdf.PDFMergerUtility;
 import org.w3c.dom.Document;
 
 public class PdfByOrderNos {
@@ -40,7 +40,11 @@ public class PdfByOrderNos {
 		PDFMergerUtility pdfMU = new PDFMergerUtility();
 		for (String orderNo : this.orderNos) {
 			File singlePagePDF = new File(stripFileSeperatorFromPath(this.pathToSourcePdfFolder) + File.separator + orderNo + ".pdf"); // Get single-page PDF-file from goobi-source-folder.
-			pdfMU.addSource(singlePagePDF); // Add single-page PDF to Merger-Utility
+			try {
+				pdfMU.addSource(singlePagePDF); // Add single-page PDF to Merger-Utility
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			}
 		}
 
 		destinationFileName = destinationFileName + ".pdf";
@@ -48,10 +52,11 @@ public class PdfByOrderNos {
 		// Merge PDF and save it:
 		pdfMU.setDestinationFileName(stripFileSeperatorFromPath(this.pathToDestination) + File.separator + destinationFileName); // Filename for new PDF created from merged single-page PDFs
 		try {
-			pdfMU.mergeDocuments(); // Merge single-page PDFs
-		} catch (COSVisitorException | IOException e) {
+			pdfMU.mergeDocuments(null); // Merge single-page PDFs
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
+
 	}
 
 

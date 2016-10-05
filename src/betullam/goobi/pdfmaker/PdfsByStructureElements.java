@@ -1,6 +1,7 @@
 package betullam.goobi.pdfmaker;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -10,8 +11,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.XPathExpressionException;
 
-import org.apache.pdfbox.exceptions.COSVisitorException;
-import org.apache.pdfbox.util.PDFMergerUtility;
+import org.apache.pdfbox.multipdf.PDFMergerUtility;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
@@ -85,7 +85,11 @@ public class PdfsByStructureElements {
 			PDFMergerUtility pdfMU = new PDFMergerUtility();
 			for (String imageNo : imageNos) {
 				File singlePagePDF = new File(this.pathToPdfFolder + imageNo + ".pdf"); // Get single-page PDF-file
-				pdfMU.addSource(singlePagePDF); // Add single-page PDF to Merger-Utility
+				try {
+					pdfMU.addSource(singlePagePDF); // Add single-page PDF to Merger-Utility
+				} catch (FileNotFoundException e) {
+					e.printStackTrace();
+				}
 			}
 			
 			// Get running no:
@@ -97,10 +101,11 @@ public class PdfsByStructureElements {
 			// Merge PDF and save it:
 			pdfMU.setDestinationFileName(this.pathToDestination + pdfSingleArticleFilename); // Filename for new PDF created from merged single-page PDFs
 			try {
-				pdfMU.mergeDocuments(); // Merge single-page PDFs
-			} catch (COSVisitorException | IOException e) {
+				pdfMU.mergeDocuments(null); // Merge single-page PDFs
+			} catch (IOException e) {
 				e.printStackTrace();
 			}
+			
 		}
 	}
 	
@@ -114,7 +119,9 @@ public class PdfsByStructureElements {
 			DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 			DocumentBuilder db = dbf.newDocumentBuilder();
 			document = db.parse(metaxmlFile);
-		} catch (SAXException | IOException e) {
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (SAXException e) {
 			e.printStackTrace();
 		} catch (ParserConfigurationException e) {
 			e.printStackTrace();
