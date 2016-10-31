@@ -15,8 +15,8 @@ import org.apache.pdfbox.multipdf.PDFMergerUtility;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
-import betullam.goobi.oaihelper.classes.Id;
-import betullam.goobi.oaihelper.main.GoobiOaiHelper;
+import ak.goobi.oaihelper.classes.Id;
+import ak.goobi.oaihelper.main.GoobiOaiHelper;
 
 
 
