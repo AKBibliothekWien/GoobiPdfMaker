@@ -1,4 +1,4 @@
-package betullam.goobi.pdfmaker;
+package ak.goobi.pdfmaker;
 
 import java.io.File;
 import java.io.FileNotFoundException;

@@ -1,4 +1,4 @@
-package betullam.goobi.pdfmaker;
+package ak.goobi.pdfmaker;
 
 
 public class Main {

@@ -1,4 +1,4 @@
-package betullam.goobi.pdfmaker;
+package ak.goobi.pdfmaker;
 
 import java.util.List;
 
